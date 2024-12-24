@@ -1,0 +1,41 @@
+{
+  id: "mud-school",
+  name: "MUD School",
+  description: "A place to learn the basics of MUDs.",
+  rooms: {
+    entrance: {
+      name: "Entrance Room",
+      description: "A room with a sign that says 'Welcome to MUD School!'",
+      exits: {
+        in: {
+          description: "A grand entrance leads into the MUD schoo.",
+          destination: "mud-school:classroom",
+        },
+      },
+    },
+    classroom: {
+      name: "Classroom",
+      description: "A room with a chalkboard and desks.",
+      exits: {
+        out: {
+          description: "A grand entrance leads out of the MUD school.",
+          destination: "mud-school:entrance",
+        },
+        east: {
+          description: "A door leads to the library.",
+          destination: "mud-school:library",
+        },
+      },
+    },
+    library: {
+      name: "Library",
+      description: "A room with bookshelves full of MUD books.",
+      exits: {
+        west: {
+          description: "A door leads to the classroom.",
+          destination: "mud-school:classroom",
+        },
+      },
+    },
+  },
+}
