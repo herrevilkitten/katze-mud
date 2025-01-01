@@ -1,0 +1,27 @@
+{
+  id: "standard",
+  name: "Standard Items and Mobiles",
+  description: "A zone containing standard items and mobiles.",
+  items: {
+    longsword: {
+      name: "Longsword",
+      description: "A standard longsword.",
+      material: "iron",
+    },
+    smallBuckler: {
+      name: "Small Buckler",
+      description: "A standard small buckler.",
+      material: "iron",
+    },
+    copperBreastplate: {
+      name: "Copper Breastplate",
+      description: "A standard copper breastplate.",
+      material: "copper",
+    },
+    copperHelmet: {
+      name: "Copper Helmet",
+      description: "A standard copper helmet.",
+      material: "copper",
+    },
+  },
+}

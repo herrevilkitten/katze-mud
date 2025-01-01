@@ -3,7 +3,10 @@ export class Pool {
   private maximum: number;
   private current: number;
 
-  constructor(minimum: number, maximum: number) {
+  constructor(minimum: number, maximum?: number) {
+    if (maximum === undefined) {
+      maximum = minimum;
+    }
     this.minimum = minimum;
     this.maximum = maximum;
     this.current = maximum;

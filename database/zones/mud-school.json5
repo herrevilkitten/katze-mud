@@ -2,6 +2,8 @@
   id: "mud-school",
   name: "MUD School",
   description: "A place to learn the basics of MUDs.",
+  resetInterval: 60,
+  onReset: "mud-school.reset",
   rooms: {
     entrance: {
       name: "Entrance Room",
@@ -11,6 +13,9 @@
           description: "A grand entrance leads into the MUD schoo.",
           destination: "mud-school:classroom",
         },
+      },
+      extraDescriptions: {
+        sign: "The sign reads: 'Welcome to MUD School!'",
       },
     },
     classroom: {
@@ -26,6 +31,9 @@
           destination: "mud-school:library",
         },
       },
+      extraDescriptions: {
+        chalkboard: "The chalkboard reads: 'Welcome to MUD School!'",
+      },
     },
     library: {
       name: "Library",
@@ -36,6 +44,25 @@
           destination: "mud-school:classroom",
         },
       },
+      extraDescriptions: {
+        bookshelf: "The bookshelf is full of MUD books.",
+        books: "The books are full of MUD knowledge.",
+      },
+    },
+  },
+  items: {
+    book: {
+      name: "Book",
+      description: "A book full of MUD knowledge.",
+    },
+  },
+  mobiles: {
+    teacher: {
+      name: "Teacher",
+      description: "A teacher who is ready to teach you about MUDs.",
+      heath: 100,
+      mana: 100,
+      stamina: 100,
     },
   },
 }

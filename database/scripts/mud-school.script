@@ -1,0 +1,11 @@
+in mud-school:classroom
+  on reset
+    add mobile teacher
+      add item attendance-book
+    add mobile student
+in mud-school:entrance
+  on reset
+    add mobile guard
+      add item standard:longsword in mainhand
+      add item standard:small-buckler in offhand
+      add item standard:copper-breastplate in chest

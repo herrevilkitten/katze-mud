@@ -1,0 +1,57 @@
+id: mud-school
+name: MUD School
+description: "A school for new players to learn the basics of the game."
+resetInterval: 60s
+onReset:
+  - broadcast:
+      to: zone
+      messge: |
+        The MUD School has been reset.
+        Welcome to the MUD School!
+  - createMobile:
+      mobile: teacher
+      to: classroom
+      message: "The teacher enters the classroom."
+rooms:
+  - id: entrance
+    name: "MUD School Entrance"
+    description: "You are standing at the entrance to the MUD School. A sign hangs above the entrance."
+    exits:
+      - direction: "in"
+        description: "Enter the MUD School."
+        destination: "classroom"
+    extraDescriptions:
+      - id: sign
+        description: "A sign reads: 'Welcome to the MUD School.'"
+  - id: classroom
+    name: "Classroom"
+    description: "You are in a classroom. A blackboard hangs on the wall."
+    exits:
+      - direction: "out"
+        description: "Leave the MUD School."
+        destination: "entrance"
+      - direction: "east"
+        description: "Go to the library."
+        destination: "library"
+    extraDescriptions:
+      - id: blackboard
+        description: "The blackboard reads: Your teacher loves apples."
+  - id: library
+    name: "Library"
+    description: "You are in the library. Books line the shelves."
+    exits:
+      - direction: "west"
+        description: "Go to the classroom."
+        destination: "classroom"
+    items:
+      - id: book
+        name: "Book"
+        description: "A book on the history of the MUD."
+        material: "paper"
+mobiles:
+  - id: teacher
+    name: "Teacher"
+    description: "A friendly teacher."
+    health: 100
+    mana: 100
+    stamina: 100

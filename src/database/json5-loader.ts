@@ -1,6 +1,6 @@
 import JSON5 from "json5";
 import { readFileSync, readdirSync } from "fs";
-import { Area } from "../model/area";
+import { Zone } from "../model/zone";
 import { Room } from "../model/room";
 import { Exit } from "../model/exit";
 
@@ -8,6 +8,7 @@ interface Json5Room {
   name: string;
   description: string;
   exits: { [id: string]: Json5Exit };
+  extraDescriptions: { [id: string]: string };
 }
 
 interface Json5Exit {
@@ -15,7 +16,7 @@ interface Json5Exit {
   destination: string;
 }
 
-interface Json5Area {
+interface Json5Zone {
   id: string;
   name: string;
   description: string;
@@ -43,35 +44,43 @@ function parseJson5Room(id: string, room5: Json5Room): Room {
     room.exits.set(exitId, exit);
   }
 
+  room.extraDescriptions = new Map(Object.entries(room5.extraDescriptions));
+
   return room;
 }
 
-function parseJson5Area(id: string, area5: Json5Area): Area {
-  const area = new Area();
+function parseJson5Zone(id: string, zone5: Json5Zone): Zone {
+  const zone = new Zone();
 
-  area.id = id;
-  area.name = area5.name;
-  area.description = area5.description;
+  zone.id = id;
+  zone.name = zone5.name;
+  zone.description = zone5.description;
 
-  for (const [roomId, room5] of Object.entries(area5.rooms)) {
-    const room = parseJson5Room(roomId, room5);
-    area.rooms.set(roomId, room);
+  if (zone5.rooms) {
+    for (const [roomId, room5] of Object.entries(zone5.rooms)) {
+      const room = parseJson5Room(roomId, room5);
+      zone.rooms.set(roomId, room);
+    }
   }
 
-  return area;
+  return zone;
 }
 
-export function loadJson5World(path: string): Area[] {
-  const areas: Area[] = [];
+export function loadJson5World(path: string): Zone[] {
+  const zones: Zone[] = [];
   const files = readdirSync(path);
 
   for (const file of files) {
+    if (!file.endsWith(".json5")) {
+      continue;
+    }
+    console.log(`Loading ${file}`);
     const id = file.replace(/\.json5$/, "");
     const json5 = JSON5.parse(readFileSync(`${path}/${file}`, "utf8"));
 
-    const area = parseJson5Area(id, json5);
-    areas.push(area);
+    const zone = parseJson5Zone(id, json5);
+    zones.push(zone);
   }
 
-  return areas;
+  return zones;
 }

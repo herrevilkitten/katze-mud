@@ -1,0 +1,20 @@
+id: "standard"
+name: "Standard"
+description: "Standard zone"
+items:
+  - id: small-buckler
+    name: "Small Buckler"
+    description: "A small buckler"
+    material: "wood"
+  - id: longsword
+    name: "Longsword"
+    description: "A longsword"
+    material: "iron"
+  - id: leather-armor
+    name: "Leather Armor"
+    description: "Leather armor"
+    material: "leather"
+  - id: copper-helmet
+    name: "Copper Helmet"
+    description: "A copper helmet"
+    material: "copper"

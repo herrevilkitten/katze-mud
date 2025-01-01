@@ -16,6 +16,8 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
-    "json5": "^2.2.3"
+    "json5": "^2.2.3",
+    "parse-duration": "^1.1.1",
+    "yaml": "^2.6.1"
   }
 }

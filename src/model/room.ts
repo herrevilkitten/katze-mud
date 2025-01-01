@@ -6,4 +6,5 @@ export class Room {
   description = "";
 
   exits = new Map<string, Exit>();
+  extraDescriptions = new Map<string, string>();
 }

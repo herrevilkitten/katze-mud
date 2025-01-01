@@ -15,7 +15,9 @@ export class Character {
   intelligence = 0;
   wisdom = 0;
   charisma = 0;
-  
+
+  extraDescriptions = new Map<string, string>();
+
   constructor() {
     this.health.fill();
     this.mana.fill();
