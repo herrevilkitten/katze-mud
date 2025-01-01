@@ -3,8 +3,13 @@ import { parse } from "yaml";
 import { DEFAULT_RESET_INTERVAL, Zone } from "../model/zone";
 import { Room } from "../model/room";
 import { Exit } from "../model/exit";
-import { Character } from "../model/character";
+import {
+  Character,
+  CharacterPrototype,
+  DEFAULT_ABILITY_SCORE,
+} from "../model/character";
 import parseDuration from "parse-duration";
+import { Dice } from "../model/dice";
 
 interface YamlExtraDescription {
   id: string;
@@ -36,9 +41,15 @@ interface YamlCharacter {
   id: string;
   name: string;
   description: string;
-  health: number | string;
-  mana: number | string;
-  stamina: number | string;
+  health: string;
+  mana: string;
+  stamina: string;
+  strength: string;
+  dexterity: string;
+  constitution: string;
+  intelligence: string;
+  wisdom: string;
+  charisma: string;
 }
 
 interface YamlBroadcastReset {
@@ -65,24 +76,37 @@ interface YamlZone {
   mobiles?: YamlCharacter[];
 }
 
-function parseYamlCharacter(yaml: YamlCharacter) {
-  const mobile = new Character();
+function parseYamlCharacter(zone: Zone, yaml: YamlCharacter) {
+  const mobile = new CharacterPrototype(zone);
 
-  mobile.id = yaml.id;
+  mobile.prototypeId = yaml.id;
+  console.log(`Parsing mobile ${mobile.id}`);
   mobile.name = yaml.name;
   mobile.description = yaml.description;
-  /*
-  mobile.health = yaml.health;
-  mobile.mana = yaml.mana;
-  mobile.stamina = yaml.stamina;
-*/
+
+  mobile.health = Dice.fromString(yaml.health ?? "1");
+  mobile.mana = Dice.fromString(yaml.mana ?? "1");
+  mobile.stamina = Dice.fromString(yaml.stamina ?? "1");
+
+  mobile.strength = Dice.fromString(yaml.strength ?? DEFAULT_ABILITY_SCORE);
+  mobile.dexterity = Dice.fromString(yaml.dexterity ?? DEFAULT_ABILITY_SCORE);
+  mobile.constitution = Dice.fromString(
+    yaml.constitution ?? DEFAULT_ABILITY_SCORE
+  );
+  mobile.intelligence = Dice.fromString(
+    yaml.intelligence ?? DEFAULT_ABILITY_SCORE
+  );
+  mobile.wisdom = Dice.fromString(yaml.wisdom ?? DEFAULT_ABILITY_SCORE);
+  mobile.charisma = Dice.fromString(yaml.charisma ?? DEFAULT_ABILITY_SCORE);
+
   return mobile;
 }
 
-function parseYamlRoom(yaml: YamlRoom) {
-  const room = new Room();
+function parseYamlRoom(zone: Zone, yaml: YamlRoom) {
+  const room = new Room(zone);
 
-  room.id = yaml.id;
+  room.prototypeId = yaml.id;
+  console.log(`Parsing room ${room.id}`);
   room.name = yaml.name;
   room.description = yaml.description;
 
@@ -108,14 +132,20 @@ function parseYamlZone(yaml: YamlZone) {
   const zone = new Zone();
 
   zone.id = yaml.id;
+  console.log(`Parsing zone ${zone.id}`);
   zone.name = yaml.name;
   zone.description = yaml.description;
   zone.resetInterval =
     parseDuration(yaml.resetInterval ?? "90s", "ms") ?? DEFAULT_RESET_INTERVAL;
 
   for (const yamlRoom of yaml.rooms ?? []) {
-    const room = parseYamlRoom(yamlRoom);
+    const room = parseYamlRoom(zone, yamlRoom);
     zone.rooms.set(room.id, room);
+  }
+
+  for (const yamlCharacter of yaml.mobiles ?? []) {
+    const character = parseYamlCharacter(zone, yamlCharacter);
+    zone.characters.set(character.id, character);
   }
 
   return zone;
@@ -132,7 +162,6 @@ export function loadYamlWorld(path: string): Zone[] {
     console.log(`Loading ${file}`);
     const id = file.replace(/\.json5$/, "");
     const yaml: YamlZone = parse(readFileSync(`${path}/${file}`, "utf8"));
-    console.log(yaml);
 
     const zone = parseYamlZone(yaml);
     zones.push(zone);

@@ -39,6 +39,9 @@ export class Pool {
   }
 
   percent() {
+    if (this.maximum === 0) {
+      return 0;
+    }
     return (this.current / this.maximum) * 100;
   }
 
@@ -54,7 +57,14 @@ export class Pool {
     return this.current === this.minimum;
   }
 
-  static fromString(input: string) {
+  toString() {
+    return `${this.current}/${this.minimum}-${this.maximum}`;
+  }
+
+  static fromString(input: string | number) {
+    if (typeof input === "number") {
+      return new Pool(input);
+    }
     const match = input.match(POOL_PATTERN);
     if (!match) {
       throw new SyntaxError(`Invalid pool notation: ${input}`);

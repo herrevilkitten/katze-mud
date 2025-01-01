@@ -1,4 +1,5 @@
 import { World } from "../state/world";
+import { Character, CharacterPrototype } from "./character";
 import { Reset } from "./reset";
 import { Room } from "./room";
 
@@ -11,6 +12,7 @@ export class Zone {
   resetInterval = DEFAULT_RESET_INTERVAL;
 
   rooms = new Map<string, Room>();
+  characters = new Map<string, CharacterPrototype>();
   resets: Reset[] = [];
 
   reset(world: World) {

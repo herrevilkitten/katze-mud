@@ -32,10 +32,10 @@ function parseJson5Exit(id: string, exit5: Json5Exit): Exit {
   return exit;
 }
 
-function parseJson5Room(id: string, room5: Json5Room): Room {
-  const room = new Room();
+function parseJson5Room(zone: Zone, id: string, room5: Json5Room): Room {
+  const room = new Room(zone);
 
-  room.id = id;
+  room.prototypeId = id;
   room.name = room5.name;
   room.description = room5.description;
 
@@ -58,7 +58,7 @@ function parseJson5Zone(id: string, zone5: Json5Zone): Zone {
 
   if (zone5.rooms) {
     for (const [roomId, room5] of Object.entries(zone5.rooms)) {
-      const room = parseJson5Room(roomId, room5);
+      const room = parseJson5Room(zone, roomId, room5);
       zone.rooms.set(roomId, room);
     }
   }

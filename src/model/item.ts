@@ -1,27 +1,46 @@
+import { randomUUID, UUID } from "crypto";
+import { Zone } from "./zone";
+
 export class Item {
-  id = "";
+  readonly instanceId: UUID;
+  readonly prototype: ItemProtoype;
   name = "";
   description = "";
+
   weight = 0;
   value = 0;
   material = "";
 
   extraDescriptions = new Map<string, string>();
+
+  constructor(proto: ItemProtoype) {
+    this.instanceId = randomUUID();
+    this.prototype = proto;
+  }
+
+  get id() {
+    return `${this.prototype.id}:${this.instanceId}`;
+  }
 }
 
 export class ItemProtoype {
-  id = "";
+  prototypeId = "";
   name = "";
   description = "";
+  zone: Zone;
+
   weight = 0;
   value = 0;
   material = "";
 
   extraDescriptions = new Map<string, string>();
 
+  constructor(zone: Zone) {
+    this.zone = zone;
+  }
+
   instantiate() {
-    const item = new Item();
-    item.id = this.id;
+    const item = new Item(this);
     item.name = this.name;
     item.description = this.description;
     item.weight = this.weight;
@@ -30,5 +49,9 @@ export class ItemProtoype {
     item.material = this.material;
 
     return item;
+  }
+
+  get id() {
+    return `${this.zone.id}:${this.prototypeId}`;
   }
 }
