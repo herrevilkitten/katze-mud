@@ -6,6 +6,11 @@ export class Dice {
   modifier = 0;
 
   constructor(amount = 1, sides = 1, modifier = 0) {
+    if (amount < 1) {
+      throw new RangeError("Dice amount must be greater than 0");
+    } else if (sides < 1) {
+      throw new RangeError("Dice sides must be greater than 0");
+    }
     this.amount = amount;
     this.sides = sides;
     this.modifier = modifier;
@@ -34,7 +39,7 @@ export class Dice {
   static fromString(input: string) {
     const match = input.match(DICE_PATTERN);
     if (!match) {
-      throw new Error(`Invalid dice notation: ${input}`);
+      throw new SyntaxError(`Invalid dice notation: ${input}`);
     }
 
     const amount = parseInt(match[1], 10);
